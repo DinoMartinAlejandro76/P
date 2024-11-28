@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras - Comidas</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div id="cart-icon" onclick="toggleCart()">
+            <img src="imagenes/imagen_carrito.png" alt="Carrito" style="width: 50px; height: auto;" />
+            <span id="cart-count">0</span>
+        </div>
+    </header>
+
+    <div class="image-gallery">
+        <div class="image-item" onclick="addToCart('Pizzetas')">
+            <img src="imagenes/imagen_pizzetas.jpg" alt="Pizzetas" />
+            <p>Pizzetas</p>
+        </div>
+        <div class="image-item" onclick="addToCart('Pernil')">
+            <img src="imagenes/imagen_pernil.jpg" alt="Pernil de cerdo" />
+            <p>Pernil</p>
+        </div>
+        <div class="image-item" onclick="addToCart('Arrollado')">
+            <img src="imagenes/image_arrollado.jpg" alt="Arrollado" />
+            <p>Arrollado</p>
+        </div>
+        <div class="image-item" onclick="addToCart('Chips')">
+            <img src="imagenes/imagen_chips.jpg" alt="Chips" />
+            <p>Chips</p>
+        </div>
+        <div class="image-item" onclick="addToCart('Fiambres')">
+            <img src="imagenes/imagen_tablaFiambres.jpg" alt="Fiambres" />
+            <p>Tabla de Fiambres</p>
+        </div>
+        <div class="image-item" onclick="addToCart('Crepes')">
+            <img src="imagenes/imagen_crepes.jpg" alt="Crepes" />
+            <p>Crepes</p>
+        </div>
+    </div>
+
+    <div id="cart" class="cart">
+        <h3>Carrito</h3>
+        <ul id="cart-items"></ul>
+        <button onclick="buy()">Comprar</button>
+    </div>
+
+    <script>
+        let cart = [];
+
+        function addToCart(item) {
+            cart.push(item);
+            updateCart();
+        }
+
+        function removeFromCart(item) {
+            cart = cart.filter(cartItem => cartItem !== item);
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartCount = document.getElementById('cart-count');
+            const cartItems = document.getElementById('cart-items');
+            cartCount.textContent = cart.length;
+
+            cartItems.innerHTML = '';
+            cart.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+
+                // Crear botón de eliminar
+                const removeButton = document.createElement('button');
+                removeButton.textContent = 'Eliminar';
+                removeButton.onclick = function() {
+                    removeFromCart(item);
+                };
+
+                li.appendChild(removeButton);
+                cartItems.appendChild(li);
+            });
+        }
+
+        function toggleCart() {
+            const cartElement = document.getElementById('cart');
+            cartElement.style.display = cartElement.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function buy() {
+            const message = `Pedido: ${cart.join(', ')}`;
+            const whatsappUrl = `https://wa.me/5491122482908?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+    </script>
+</body>
+</html>
